@@ -3,7 +3,8 @@
     "build:client": "vite build --config ./vite.config.js --outDir dist/client",
     "build:server": "vite build --config ./vite.config.js --ssr client/entry-server.js --outDir dist/server",
     "build": "npm run build:client && npm run build:server",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "restart": "npm run build:client && npm run build:server && node server/server.js"
   },
   "dependencies": {
     "@fastify/cors": "^11.0.1",
