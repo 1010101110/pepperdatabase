@@ -1,6 +1,21 @@
 <template>
-  <v-app>
-    <v-app-bar app flat color="primary" dark>
+  <v-app :theme="theme">
+    <v-navigation-drawer v-model="drawer" fixed clipped app>
+        <v-list dense>
+            <v-list-item v-for="item in menu" :key="item.text">
+              <v-list-item-title class="clickable" @mouseDown="go(item.href,$event)">
+                  {{item.text}}
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-btn variant="outlined" class="mt-1 ml-2" label="change theme" @click="toggleTheme" color="indigo">change theme</v-btn>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+    <v-app-bar app flat color="indigo" dark dense fixed clipped-left>
+      <template v-slot:prepend>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      </template>
       <v-toolbar-title class="text-h6 font-weight-bold">PepperDatabase</v-toolbar-title>
       <v-spacer />
       <v-btn icon>
@@ -11,11 +26,39 @@
     <v-main>
       <router-view />
     </v-main>
+
+    <v-snackbar-queue v-model="snacks"></v-snackbar-queue>
   </v-app>
 </template>
 
 <script setup>
-// Nothing required here yet for basic layout
+import { ref, onMounted, provide } from 'vue';
+
+const drawer = ref(false)
+const menu = [
+  {text:"Species",href:"species"},
+  {text:"Varieties",href:"varieties"},
+  {text:"Users",href:"users"},
+  {text:"Activity",href:"history"},
+  {text:"Exchange",href:"xchange"},
+]
+
+const theme = ref('dark');
+function toggleTheme(){
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
+  localStorage.setItem('vtheme',theme.value)
+}
+
+const snacks = ref([])
+provide('snacks',snacks)
+
+onMounted(()=>{
+  const vtheme = localStorage.getItem('vtheme')
+  if (vtheme) {
+    theme.value = vtheme
+  }
+})
+
 </script>
 
 <style>
