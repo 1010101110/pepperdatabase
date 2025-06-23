@@ -1,36 +1,36 @@
 async function routes (fastify, options) {
 
-fastify.get('/search/:s', async (request, reply) => {
+fastify.get('/:s', async (request, reply) => {
     const { s } = request.params;
-    const connection = await fastify.mysql.getConnection();
-    const [species] = await connection.query(
+    const decoded = atob(s);
+    const wildcard = `%${decoded}%`;
+    const [species] = await fastify.mysql.query(
         `
             SELECT *
             FROM species
-            WHERE name LIKE '%?%'
+            WHERE name LIKE ?
         `,
-        [s]
+        [wildcard]
     );
 
-    const [varieties] = await connection.query(
+    const [varieties] = await fastify.mysql.query(
         `
             SELECT *
             FROM varieties
-            WHERE name LIKE '%?%'
+            WHERE name LIKE ?
         `,
-        [s]
+        [wildcard]
     );
 
-    const [accessions] = await connection.query(
+    const [accessions] = await fastify.mysql.query(
         `
             SELECT *
             FROM xaccession
-            WHERE variety LIKE '%?% or ID = ?'
+            WHERE variety LIKE ? or ID = ?
         `,
-        [s,s]
+        [wildcard,decoded]
     );
 
-    connection.release();
     return {
         species:species,
         varieties:varieties,
