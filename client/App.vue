@@ -2,8 +2,8 @@
   <v-app :theme="theme">
     <v-navigation-drawer v-model="drawer" fixed clipped app>
         <v-list dense>
-            <v-list-item v-for="item in menu" :key="item.text">
-              <v-list-item-title class="clickable" @mouseDown="go(item.href,$event)">
+            <v-list-item v-for="item in menu" :key="item.text" :to="item.href">
+              <v-list-item-title>
                   {{item.text}}
               </v-list-item-title>
             </v-list-item>
@@ -16,7 +16,9 @@
       <template v-slot:prepend>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       </template>
-      <v-toolbar-title class="text-h6 font-weight-bold">PepperDatabase</v-toolbar-title>
+      <router-link to="/" class="text-white text-decoration-none">
+        <v-toolbar-title class="cursor-pointer">PepperDatabase</v-toolbar-title>
+      </router-link>
       <v-spacer />
       <v-btn icon>
         <v-icon>mdi-account-circle</v-icon>
@@ -33,14 +35,15 @@
 
 <script setup>
 import { ref, onMounted, provide } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const drawer = ref(false)
 const menu = [
-  {text:"Species",href:"species"},
-  {text:"Varieties",href:"varieties"},
-  {text:"Users",href:"users"},
-  {text:"Activity",href:"history"},
-  {text:"Exchange",href:"xchange"},
+  {text:"Species",href:"/species"},
+  {text:"Varieties",href:"/varieties"},
+  {text:"Users",href:"/users"},
+  {text:"Activity",href:"/history"},
+  {text:"Exchange",href:"/xchange"},
 ]
 
 const theme = ref('dark');
