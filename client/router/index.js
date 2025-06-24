@@ -3,10 +3,11 @@ import { createMemoryHistory, createRouter as _createRouter, createWebHistory } 
 import Splash from '../views/Splash.vue';
 // import VarietiesList from '../views/VarietiesList.vue';
 // import VarietyDetail from '../views/VarietyDetail.vue';
-// import SpeciesList from '../views/SpeciesList.vue';
+import SpeciesList from '../views/SpeciesList.vue';
 // import SpeciesDetail from '../views/SpeciesDetail.vue';
 // import UserLogin from '../views/UserLogin.vue';
 // import UserProfile from '../views/UserProfile.vue';
+import NotFound from '../views/NotFound.vue';
 
 export function createRouter() {
   return _createRouter({
@@ -15,10 +16,11 @@ export function createRouter() {
       { path: '/', component: Splash },
     //   { path: '/varieties', component: VarietiesList },
     //   { path: '/varieties/:id', component: VarietyDetail },
-    //   { path: '/species', component: SpeciesList },
+      { path: '/species', component: SpeciesList },
     //   { path: '/species/:id', component: SpeciesDetail },
     //   { path: '/login', component: UserLogin },
-    //   { path: '/user', component: UserProfile }
+    //   { path: '/user', component: UserProfile },
+      { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
     ]
   });
 }
