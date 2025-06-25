@@ -1,3 +1,53 @@
+<script setup>
+// init
+import debounce from 'lodash.debounce';
+
+// reactive state
+const search = ref('');
+const searchresults = ref({});
+const snacks = inject('snacks')
+
+useHead({
+  title: 'PepperDatabase'
+})
+
+
+// functions
+const debounceSearch = debounce(apiSearch,300);
+
+async function apiSearch(){
+  if(search.value && search.value.length > 1){
+    try {
+      const encoded = btoa(search.value)
+      const data = await $fetch('/api/search', { query: { s : encoded}})
+      if(data.species.length || data.varieties.length || data.accessions.length){
+        searchresults.value = data
+      }else{
+        throw 'no results'
+      }
+    } catch (error) {
+      snacks.value.push('search: ' + error)
+      searchresults.value = []
+    }
+  }else{
+    searchresults.value = []
+  }
+}
+
+function accessionImage(a){
+  if(a && a.images){
+    var i = JSON.parse(a.images)
+    if(i.length > 0){
+      return i[0]
+    }else{
+      return ''
+    }
+  }else{
+    return ''
+  }
+}
+</script>
+
 <template>
   <v-container class="text-center">
     <v-row class="my-12" justify="center">
@@ -22,7 +72,7 @@
           <span>{{ i.name }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/species/${name_to_url(i.name)}`">details</v-btn>
+          <v-btn :href="`/species/${i.name}`">details</v-btn>
         </div>
       </v-col>
 
@@ -38,7 +88,7 @@
           <span>{{ i.name }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/variety/${name_to_url(i.name)}`">details</v-btn>
+          <v-btn :href="`/varieties/${i.name}`">details</v-btn>
         </div>
       </v-col>
 
@@ -54,62 +104,9 @@
           <span>PDB {{ i.ID }} {{ i.variety }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/accession/${i.ID}`">details</v-btn>
+          <v-btn :href="`/accessions/${i.ID}`">details</v-btn>
         </div>
       </v-col>
     </v-row>
   </v-container>
 </template>
-
-<script setup>
-// init
-import { ref, inject } from 'vue';
-import debounce from 'lodash.debounce';
-
-// reactive state
-const search = ref('');
-const searchresults = ref({});
-const snacks = inject('snacks')
-
-// functions
-const debounceSearch = debounce(apiSearch,500);
-
-async function apiSearch(){
-  if(search.value && search.value.length > 1){
-    try {
-      const encoded = btoa(search.value)
-      const resp = await fetch('/api/search/' + encoded)
-      console.log(resp)
-      if(resp.ok){
-        const results = await resp.json()
-        console.log(results)
-        searchresults.value = results
-      }else{
-        throw 'bad search call'
-      }
-    } catch (error) {
-      snacks.value.push('search error: ' + error)
-      searchresults.value = []
-    }
-  }else{
-    searchresults.value = []
-  }
-}
-
-function name_to_url(name){
-  return name.replace(/ /g,"-").toLowerCase()
-}
-
-function accessionImage(a){
-  if(a && a.images){
-    var i = JSON.parse(a.images)
-    if(i.length > 0){
-      return i[0]
-    }else{
-      return ''
-    }
-  }else{
-    return ''
-  }
-}
-</script>

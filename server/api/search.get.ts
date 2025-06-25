@@ -1,10 +1,12 @@
-async function routes (fastify, options) {
+import db from '~/server/utils/db'
 
-fastify.get('/:s', async (request, reply) => {
-    const { s } = request.params;
+export default defineEventHandler(async (event) => {
+  const query = await getQuery(event)
+  if(query.s){
+    const s = query.s.toString();
     const decoded = atob(s);
     const wildcard = `%${decoded}%`;
-    const [species] = await fastify.mysql.query(
+    const [species] = await db.query(
         `
             SELECT *
             FROM species
@@ -13,7 +15,7 @@ fastify.get('/:s', async (request, reply) => {
         [wildcard]
     );
 
-    const [varieties] = await fastify.mysql.query(
+    const [varieties] = await db.query(
         `
             SELECT *
             FROM varieties
@@ -22,7 +24,7 @@ fastify.get('/:s', async (request, reply) => {
         [wildcard]
     );
 
-    const [accessions] = await fastify.mysql.query(
+    const [accessions] = await db.query(
         `
             SELECT *
             FROM xaccession
@@ -36,9 +38,6 @@ fastify.get('/:s', async (request, reply) => {
         varieties:varieties,
         accessions:accessions
     }
-});
+  }
 
-
-}
-
-export default routes;
+})
