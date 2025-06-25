@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useTheme } from 'vuetify'
   import { onMounted } from 'vue'
+  const router = useRouter()
 
   const drawer = ref(null);
   const menu = [
@@ -38,11 +39,13 @@
   <v-app>
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="md">
         <v-list dense>
-            <v-list-item v-for="item in menu" :to="item.href">
+
+            <v-list-item v-for="item in menu" link @click="router.push(item.href)">
               <v-list-item-title>
-                  {{item.text}}
+                {{item.text}}
               </v-list-item-title>
             </v-list-item>
+
             <v-list-item>
               <v-btn variant="outlined" class="mt-1 ml-2" label="change theme" @click="toggleTheme" color="indigo">change theme</v-btn>
             </v-list-item>

@@ -72,7 +72,7 @@ function accessionImage(a){
           <span>{{ i.name }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/species/${i.name}`">details</v-btn>
+          <v-btn :to="`/species/${i.name}`">details</v-btn>
         </div>
       </v-col>
 
@@ -88,7 +88,7 @@ function accessionImage(a){
           <span>{{ i.name }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/varieties/${i.name}`">details</v-btn>
+          <v-btn :to="`/varieties/${i.name}`">details</v-btn>
         </div>
       </v-col>
 
@@ -104,7 +104,7 @@ function accessionImage(a){
           <span>PDB {{ i.ID }} {{ i.variety }}</span>
         </div>
         <div class="d-inline-flex mx-2">
-          <v-btn :href="`/accessions/${i.ID}`">details</v-btn>
+          <v-btn :to="`/accessions/${i.ID}`">details</v-btn>
         </div>
       </v-col>
     </v-row>
