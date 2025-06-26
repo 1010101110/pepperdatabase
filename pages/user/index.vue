@@ -57,20 +57,23 @@ function cancel(){
 
 <template>
   <v-card v-if="user" class="pa-2 ma-2">
-    {{ user }}
-    <v-btn @click="logout">logout</v-btn>
+    <div class="mb-4">
+      {{ user }}
+    </div>
+
+    <v-btn @click="logout" color="secondary">logout</v-btn>
   </v-card>
   <v-card v-else class="pa-2 ma-2">
     <div v-if="displayLogin === 'register'">
       <v-text-field v-model="txtUser" placeholder="username" autocomplete="username"></v-text-field>
       <v-text-field v-model="txtEmail" placeholder="email address" autocomplete="email"></v-text-field>
-      <v-btn @click="register">submit</v-btn>
-      <v-btn @click="cancel">cancel</v-btn>
+      <v-btn @click="register" color="primary" class="mx-2">submit</v-btn>
+      <v-btn @click="cancel" class="mx-2">cancel</v-btn>
     </div>
     <div v-if="displayLogin === 'login'">
       <v-text-field v-model="txtHash" placeholder="account secret from email"></v-text-field>
-      <v-btn @click="login">login</v-btn>
-      <v-btn @click="displayLogin = 'register'"> register a new account</v-btn>
+      <v-btn @click="login" color="primary" class="mx-2">login</v-btn>
+      <v-btn @click="displayLogin = 'register'" color="secondary" class="mx-2"> register a new account</v-btn>
     </div>
   </v-card>
 </template>
