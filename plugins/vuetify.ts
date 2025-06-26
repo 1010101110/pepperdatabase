@@ -4,6 +4,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
+import colors from 'vuetify/util/colors'
 
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
@@ -11,7 +12,23 @@ export default defineNuxtPlugin((nuxtApp) => {
     directives,
     ssr: true,
     theme: {
-      defaultTheme: 'dark',
+      defaultTheme: 'pdbdark',
+      themes:{
+        pdblight:{
+          dark:false,
+          colors:{
+            primary: '#3f51b5',
+            secondary: '#3f8cb5'
+          }
+        },
+        pdbdark:{
+          dark:true,
+          colors:{
+            primary: '#3f51b5',
+            secondary: '#3f8cb5'
+          }
+        }
+      }
     },
   })
 
