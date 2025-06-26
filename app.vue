@@ -9,7 +9,7 @@
   {text:"Varieties",href:"/varieties"},
   {text:"Users",href:"/users"},
   {text:"Activity",href:"/history"},
-  {text:"Exchange",href:"/xchange"},
+  {text:"Xchange",href:"/xchange"},
   ];
 
   const { user } = useAuth()
