@@ -12,7 +12,7 @@
   {text:"Exchange",href:"/xchange"},
   ];
 
-
+  const { user } = useAuth()
 
   const theme = useTheme()
   onMounted(() => {
@@ -59,7 +59,10 @@
         <v-toolbar-title class="cursor-pointer">PepperDatabase</v-toolbar-title>
       </NuxtLink>
       <v-spacer />
-      <v-btn icon to="/user">
+      <v-btn icon to="/user" v-if="user">
+        <v-avatar :image="`https://pepperdatabase.org/images/avatars/${user.id}.jpg`"></v-avatar>
+      </v-btn>
+      <v-btn icon to="/user" v-else>
         <v-icon>mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
