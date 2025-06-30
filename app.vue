@@ -35,6 +35,12 @@
   })
 </script>
 
+<style>
+  .clickable{
+      cursor: pointer;
+  }
+</style>
+
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="md">
