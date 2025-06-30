@@ -13,7 +13,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 })
 
-
 function getCookieFromRequest() {
   if (process.server) {
     // SSR: read cookie from request headers
