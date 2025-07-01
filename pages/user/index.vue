@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { useAuth } from '~/composables/auth'
 
 // reactive state
@@ -8,6 +9,7 @@ const txtHash = ref('')
 const displayLogin = ref('login')
 const txtUser = ref('')
 const txtEmail = ref('')
+const txtForgot = ref('')
 const { user, clearUser,setUser } = useAuth()
 
 useHead({
@@ -144,6 +146,23 @@ catch(err){
 }
 }
 
+async function forgot(){
+  try{
+    const data = await $fetch(
+      '/api/user/forgot',
+      {method:'POST', body:{email: txtForgot.value}}
+    );
+    if(data.success){
+      cancel();
+
+      snacks.value.push('check your email')
+    }else{
+      throw data.error
+    }
+  }catch(err){
+    snacks.value.push('error ' + err.toString())
+  }
+}
 </script>
 
 <template>
@@ -185,12 +204,16 @@ catch(err){
       <v-text-field v-model="txtUser" placeholder="username" autocomplete="username"></v-text-field>
       <v-text-field v-model="txtEmail" placeholder="email address" autocomplete="email"></v-text-field>
       <v-btn @click="register" color="primary" class="mx-2">submit</v-btn>
-      <v-btn @click="cancel" class="mx-2">cancel</v-btn>
     </div>
     <div v-if="displayLogin === 'login'">
       <v-text-field v-model="txtHash" placeholder="account secret from email"></v-text-field>
       <v-btn @click="login" color="primary" class="mx-2">login</v-btn>
       <v-btn @click="displayLogin = 'register'" color="secondary" class="mx-2"> register a new account</v-btn>
+      <v-btn @click="displayLogin = 'forgot'" color="error">forgot my shit</v-btn>
+    </div>
+    <div v-if="displayLogin === 'forgot'">
+      <v-text-field v-model="txtForgot" placeholder="email address"></v-text-field>
+      <v-btn @click="forgot" color="primary">Resend Email</v-btn>
     </div>
   </v-card>
 </template>
