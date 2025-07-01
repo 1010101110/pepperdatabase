@@ -13,6 +13,9 @@ export default defineEventHandler(async (event) => {
   const decode = decodeURIComponent(id).trim();
 
   const [results] = await db.execute('SELECT * FROM species WHERE id = ? or name = ?', [decode,decode])
-
-  return (results as any)[0] || {}
+  const row = (results as any)[0]
+  if(row && row.description){
+    row.description = atob(row.description)
+  }
+  return row
 });

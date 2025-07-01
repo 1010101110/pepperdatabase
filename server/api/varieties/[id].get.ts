@@ -14,5 +14,9 @@ export default defineEventHandler(async (event) => {
 
   const [results] = await db.execute('SELECT * FROM varieties WHERE ID = ? or name = ?', [decode,decode])
 
-  return (results as any)[0] || {}
+  const row = (results as any)[0]
+  if(row && row.description){
+    row.description = atob(row.description)
+  }
+  return row
 });
