@@ -1,8 +1,6 @@
 <script setup>
-import { onUpdated, watch } from 'vue';
-
 //bind model value
-const model = defineModel({default:'vmodel not initialized?'})
+const model = defineModel({default:''})
 const emit = defineEmits(['update:modelValue'])
 
 const {editable = true, label = ''} = defineProps({
@@ -12,7 +10,7 @@ const {editable = true, label = ''} = defineProps({
 
 const editor = useEditor({
   content: model.value,
-  extensions: [TiptapStarterKit],
+  extensions: [TiptapStarterKit, TiptapPlaceholder],
   editable:editable,
   onUpdate: ({editor}) => {
     //set the bind value
@@ -163,5 +161,14 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   height: 100%;
+}
+p.is-empty::before {
+  content: attr(data-placeholder);
+  color: #888;
+  pointer-events: none;
+  height: 0;
+  display: block;
+  position: absolute;
+  font-style: italic;
 }
 </style>
