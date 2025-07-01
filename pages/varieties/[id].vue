@@ -45,6 +45,7 @@ async function updateRecord(){
         ></v-text-field>
         <v-select
           v-model="varieties.species"
+          :readonly="!editable"
           label="species"
           :items="species"
           item-title="name"
