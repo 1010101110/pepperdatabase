@@ -3,7 +3,7 @@
 const snacks = inject('snacks')
 const route = useRoute()
 
-const {data} = await useFetch(`/api/accessions/${route.params.id}`)
+const {data} = await useFetch(`/api/xaccession/${route.params.id}`)
 
 useHead({
   title: computed(() => `PDB ${data.value?.ID} ${data.value?.variety}` || 'Accession')

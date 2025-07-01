@@ -161,6 +161,9 @@ async function updateRegistration(r){
     }
 }
 
+function formatDate(d){
+    return new Date(d).toLocaleString()
+}
 </script>
 
 <template>
@@ -280,7 +283,7 @@ async function updateRegistration(r){
             -->
                 Package sent to exchange: <span class="font-weight-bold">{{formatDate(resp.r.sent)}}</span><br><br>
                 Package recieved: <span v-if="resp.r.received" class="font-weight-bold">{{formatDate(resp.r.received)}}</span><br><br>
-                Package returned to you: <span v-if="resp.r.returned" class="font-weight-bold">{{new Date(resp.r.returned)}}</span><br>
+                Package returned to you: <span v-if="resp.r.returned" class="font-weight-bold">{{formatDate(resp.r.returned)}}</span><br>
             </div>
             </v-card>
         </div>

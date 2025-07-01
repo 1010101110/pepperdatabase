@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 
   const decode = decodeURIComponent(id).trim();
 
-  const [results] = await db.execute('SELECT a.*, r.user, r.region, r.sent, r.exchange FROM xaccession a join xregistration r on r.ID = a.xregistration WHERE a.id = ?', [decode])
+  const [results] = await db.execute('SELECT a.*, r.user, r.region, r.sent, r.exchange FROM xaccession a join xregistration r on r.ID = a.xregistration WHERE a.ID = ?', [decode])
   const row = (results as any)[0]
   try {
     // Attempt to parse the images field
