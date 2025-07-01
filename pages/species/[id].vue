@@ -54,7 +54,7 @@ async function updateRecord(){
             label="identifying attribute"
           ></v-text-field>
           <TipTapEditor v-model="species.description" :editable="editable" label="description"></TipTapEditor>
-          <v-btn @click="updateRecord" color="secondary">Update</v-btn>
+          <v-btn v-if="editable" @click="updateRecord" color="secondary">Update</v-btn>
         </v-col>
       </v-row>
     </v-card>

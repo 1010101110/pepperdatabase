@@ -88,7 +88,7 @@ async function updateRecord(){
           label="Related Accession"
         ></v-text-field>
         <TipTapEditor v-model="varieties.description" :editable="editable" label="description"></TipTapEditor>
-        <v-btn @click="updateRecord" color="secondary">Update</v-btn>
+        <v-btn v-if="editable" @click="updateRecord" color="secondary">Update</v-btn>
       </v-col>
     </v-row>
   </v-card>
