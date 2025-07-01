@@ -17,7 +17,7 @@ const selRegion = ref(null)
 const currentRegistration = ref(null)
 const registrations = ref(null)
 if(user.value){
-  const {data: rr} = await useFetch('/api/xchange/mine')
+  const {data: rr} = await useFetch('/api/xregistration/mine')
   registrations.value = rr.value
   if(registrations.value){
     currentRegistration.value = registrations.value.find(r => r.year === xchangeActive.value)
