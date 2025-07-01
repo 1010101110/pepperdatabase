@@ -15,20 +15,18 @@ useHead({
           <v-col cols="12" v-for="u in data" :key="u.id">
             <v-card class="pa-2 mb-2">
               <div class="d-inline-flex mx-2">
-                <NuxtLink :to="`/user/${u.id}`">
                   <v-img
                     :width="100"
                     cover
-                    :src="`https://pepperdatabase.org/images/avatars/${u.id}.jpg`"
+                    :src="u.avatar"
                   ></v-img>
-                </NuxtLink>
               </div>
               <div class="d-inline-flex mx-2">
                 <span>{{ u.name }}</span>
               </div>
-              <div class="d-inline-flex mx-2">
+              <!-- <div class="d-inline-flex mx-2">
                 <v-btn :href="`/user/${u.id}`">details</v-btn>
-              </div>
+              </div> -->
               <div class="d-clear"></div>
               <div class="d-inline-flex mx-2">
                 <span>{{ u.bio }}</span>

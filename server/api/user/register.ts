@@ -31,20 +31,21 @@ export default defineEventHandler(async (event) => {
             [body.email, body.username, hash]
         )
 
-        //send email
+        // send email
         const { sendMail } = useNodeMailer()
         await sendMail({
             from: 'pepper@pepperdatabase.org',
             to: body.email,
             subject: 'Welcome To PepperDatabase',
-            text: `keep this secret, it your pepper database pdb login ${hash} 🤨`
+            text: `keep this secret, it your pepper database pdb login ${hash} <br> <a href="https://pepperdatabase.org/api/user/login/activation_hash=${hash}">click to login</a> 🤨`
         })
+
+        return {success:true}
     }catch(err){
         const [urollback] = await db.execute(
             'DELETE FROM users2 where email = ?',
             [body.email]
         )
+        return {success:false, error:err};
     }
-
-    return {}
 })

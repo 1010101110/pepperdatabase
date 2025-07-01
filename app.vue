@@ -7,7 +7,7 @@
   const menu = [
   {text:"Species",href:"/species"},
   {text:"Varieties",href:"/varieties"},
-  {text:"Users",href:"/users"},
+  {text:"Users",href:"/user/list"},
   {text:"Activity",href:"/history"},
   {text:"Xchange",href:"/xchange"},
   ];
@@ -66,7 +66,7 @@
       </NuxtLink>
       <v-spacer />
       <v-btn icon to="/user" v-if="user">
-        <v-avatar :image="`https://pepperdatabase.org/images/avatars/${user.id}.jpg`"></v-avatar>
+        <v-avatar :image="user.avatar"></v-avatar>
       </v-btn>
       <v-btn icon to="/user" v-else>
         <v-icon>mdi-account-circle</v-icon>
