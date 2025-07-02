@@ -56,7 +56,7 @@ useHead({
         <v-list-item>
           <v-btn
             variant="outlined"
-            class="mt-1 ml-2"
+            class="w-100"
             label="change theme"
             @click="toggleTheme"
             color="indigo"
@@ -64,6 +64,15 @@ useHead({
           >
         </v-list-item>
       </v-list>
+      <div class="position-absolute bottom-0 pa-2 w-100">
+        <v-btn
+          variant="outlined"
+          density="compact"
+          class="w-100"
+          href="https://github.com/1010101110/pepperdatabase"
+          >Contribute to Code!</v-btn
+        >
+      </div>
     </v-navigation-drawer>
     <v-app-bar color="indigo" dark>
       <template v-slot:prepend>
