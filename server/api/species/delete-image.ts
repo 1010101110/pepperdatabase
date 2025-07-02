@@ -8,12 +8,7 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   if (body.id) {
     try {
-      await db.execute("UPDATE users2 SET avatar = ? where ID = ?", [
-        null,
-        body.id,
-      ]);
-
-      await deleteImage(body.avatar);
+      await deleteImage(`/images/species/${body.id}.webp`);
 
       return { success: true };
     } catch (e) {
@@ -21,5 +16,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  console.log("failed delete-image");
+  console.log(event);
   return { success: false };
 });

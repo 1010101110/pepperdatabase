@@ -1,23 +1,18 @@
-import db from '~/server/utils/db'
+import db from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event);
 
-    // auth
-    const user = await getUserFromRequest(event) as any
+  // auth
+  const user = (await getUserFromRequest(event)) as any;
 
-  const {
-    ID,
-    name,
-    attribute,
-    description
-  } = body || {}
+  const { ID, name, attribute, description } = body || {};
 
   if (!ID) {
-    throw createError({ statusCode: 400, message: 'Missing species ID' })
+    throw createError({ statusCode: 400, message: "Missing species ID" });
   }
 
-  const codedDescription = description ? btoa(description) : null
+  const codedDescription = description ? btoa(description) : null;
 
   const [result] = await db.execute(
     `UPDATE species SET
@@ -25,11 +20,11 @@ export default defineEventHandler(async (event) => {
       attribute = ?,
       description = ?
      WHERE ID = ?`,
-    [name, attribute, codedDescription, ID]
-  )
+    [name, attribute, codedDescription, ID],
+  );
 
   return {
     success: true,
     updated_rows: (result as any).affectedRows,
-  }
-})
+  };
+});

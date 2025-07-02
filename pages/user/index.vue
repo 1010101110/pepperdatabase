@@ -1,166 +1,164 @@
 <script setup>
-import { ref } from 'vue'
-import { useAuth } from '~/composables/auth'
+import { ref } from "vue";
+import { useAuth } from "~/composables/auth";
 
 // reactive state
-const snacks = inject('snacks')
-const route = useRoute()
-const txtHash = ref('')
-const displayLogin = ref('login')
-const txtUser = ref('')
-const txtEmail = ref('')
-const txtForgot = ref('')
-const { user, clearUser,setUser } = useAuth()
+const snacks = inject("snacks");
+const route = useRoute();
+const txtHash = ref("");
+const displayLogin = ref("login");
+const txtUser = ref("");
+const txtEmail = ref("");
+const txtForgot = ref("");
+const { user, clearUser, setUser } = useAuth();
 
 useHead({
-  title: computed(() => 'User')
-})
+  title: computed(() => "User"),
+});
 
-async function login(){
-  try{
-    const data = await $fetch(
-      '/api/user/login',
-      {method:'POST', body:{activation_hash:txtHash.value}
+async function login() {
+  try {
+    const data = await $fetch("/api/user/login", {
+      method: "POST",
+      body: { activation_hash: txtHash.value },
     });
-    if(data){
-      setUser(data)
-      snacks.value.push('logged in')
-    }else{
-      throw 'user not populated'
+    if (data) {
+      setUser(data);
+      snacks.value.push("logged in");
+    } else {
+      throw "user not populated";
     }
-  }catch(err){
-    console.log(err)
-    snacks.value.push('login error')
+  } catch (err) {
+    console.log(err);
+    snacks.value.push("login error");
   }
 }
 
-async function logout(){
-  await $fetch('/api/user/logout');
+async function logout() {
+  await $fetch("/api/user/logout");
   clearUser();
   cancel();
 }
 
-async function register(){
-  try{
-    const data = await $fetch(
-      '/api/user/register',
-      {method:'POST', body:{username: txtUser.value, email:txtEmail.value}}
-    );
-    if(data.success){
+async function register() {
+  try {
+    const data = await $fetch("/api/user/register", {
+      method: "POST",
+      body: { username: txtUser.value, email: txtEmail.value },
+    });
+    if (data.success) {
       cancel();
 
-      snacks.value.push('user registerd, check your email')
-    }else{
-      throw data.error
+      snacks.value.push("user registerd, check your email");
+    } else {
+      throw data.error;
     }
-  }catch(err){
-    snacks.value.push('registration error ' + err)
+  } catch (err) {
+    snacks.value.push("registration error " + err);
   }
 }
 
-function cancel(){
-  displayLogin.value = 'login'
-  txtEmail.value = ''
-  txtUser.value = ''
-  txtHash.value = ''
+function cancel() {
+  displayLogin.value = "login";
+  txtEmail.value = "";
+  txtUser.value = "";
+  txtHash.value = "";
 }
 
-async function uploadImage(e){
-    const fd = new FormData();
+async function uploadImage(e) {
+  const fd = new FormData();
 
-    console.log(user)
-    // user
-    if(user.value){
-        fd.append('user',user.value.id);
-    }else{
-        snacks.value.push('Invalid user for uploadImage')
-        return
-    }
+  console.log(user);
+  // user
+  if (user.value) {
+    fd.append("user", user.value.id);
+  } else {
+    snacks.value.push("Invalid user for uploadImage");
+    return;
+  }
 
-    // get image link or file
-    if (typeof e === 'string') {
-        fd.append('link', e)
-    } else if (e instanceof Event && e.target instanceof HTMLInputElement) {
-        const file = e.target.files?.[0]
-        if (file) {
-            fd.append('image', file)
-        } else {
-            snacks.value.push('No file selected')
-        }
+  // get image link or file
+  if (typeof e === "string") {
+    fd.append("link", e);
+  } else if (e instanceof Event && e.target instanceof HTMLInputElement) {
+    const file = e.target.files?.[0];
+    if (file) {
+      fd.append("image", file);
     } else {
-        snacks.value.push('Invalid input type for uploadImage')
-        return
+      snacks.value.push("No file selected");
     }
+  } else {
+    snacks.value.push("Invalid input type for uploadImage");
+    return;
+  }
 
-    try{
-        const data = await $fetch('/api/user/upload-image',{
-            method:'POST', body:fd
-        });
+  try {
+    const data = await $fetch("/api/user/upload-image", {
+      method: "POST",
+      body: fd,
+    });
 
-        if(data.success){
-            snacks.value.push('avatar uploaded')
-            if(data.url){
-                user.value.avatar = data.url
-            }
-        }else{
-            throw 'failed upload'
-        }
+    if (data.success) {
+      snacks.value.push("avatar uploaded");
+      if (data.url) {
+        user.value.avatar = data.url;
+      }
+    } else {
+      throw "failed upload";
     }
-    catch(err){
-        console.log(err)
-        snacks.value.push({text:err,color:'error'})
-    }
+  } catch (err) {
+    console.log(err);
+    snacks.value.push({ text: err, color: "error" });
+  }
 }
 
-async function deleteImage(){
-    try{
-        const data = await $fetch('/api/user/delete-image',{
-            method:'POST',
-            body:{ id: user.value.id, avatar: user.value.avatar}
-        })
-        if(data.success){
-            user.value.avatar = null
-            snacks.value.push('deleted image')
-        }else{
-            snacks.value.push('error deleteing image')
-        }
+async function deleteImage() {
+  try {
+    const data = await $fetch("/api/user/delete-image", {
+      method: "POST",
+      body: { id: user.value.id, avatar: user.value.avatar },
+    });
+    if (data.success) {
+      user.value.avatar = null;
+      snacks.value.push("deleted image");
+    } else {
+      snacks.value.push("error deleteing image");
     }
-    catch(err){
-        console.log(err)
-        snacks.value.push({text:err,color:'error'})
-    }
+  } catch (err) {
+    console.log(err);
+    snacks.value.push({ text: err, color: "error" });
+  }
 }
 
-async function updateUser(){
-  try{
-    const data = await $fetch(`/api/user`,{method:'PUT',body: user.value});
-    if(data.success){
-        snacks.value.push('udpated user')
-    }else{
-        snacks.value.push('error udpating')
+async function updateUser() {
+  try {
+    const data = await $fetch(`/api/user`, { method: "PUT", body: user.value });
+    if (data.success) {
+      snacks.value.push("udpated user");
+    } else {
+      snacks.value.push("error udpating");
     }
-}
-catch(err){
-    console.log(err)
-    snacks.value.push({text:err,color:'error'})
-}
+  } catch (err) {
+    console.log(err);
+    snacks.value.push({ text: err, color: "error" });
+  }
 }
 
-async function forgot(){
-  try{
-    const data = await $fetch(
-      '/api/user/forgot',
-      {method:'POST', body:{email: txtForgot.value}}
-    );
-    if(data.success){
+async function forgot() {
+  try {
+    const data = await $fetch("/api/user/forgot", {
+      method: "POST",
+      body: { email: txtForgot.value },
+    });
+    if (data.success) {
       cancel();
 
-      snacks.value.push('check your email')
-    }else{
-      throw data.error
+      snacks.value.push("check your email");
+    } else {
+      throw data.error;
     }
-  }catch(err){
-    snacks.value.push('error ' + err.toString())
+  } catch (err) {
+    snacks.value.push("error " + err.toString());
   }
 }
 </script>
@@ -170,25 +168,48 @@ async function forgot(){
     <div class="mb-4">
       <v-row>
         <v-col cols="12">
-          <v-text-field v-model="user.name" density="compact" label="username"></v-text-field>
+          <v-text-field
+            v-model="user.name"
+            density="compact"
+            label="username"
+          ></v-text-field>
         </v-col>
         <v-col cols="12">
-          <v-text-field v-model="user.email" density="compact" label="email address"></v-text-field>
+          <v-text-field
+            v-model="user.email"
+            density="compact"
+            label="email address"
+          ></v-text-field>
         </v-col>
         <v-col cols="12">
           <span>Avatar</span>
           <div v-if="user.avatar">
-            <v-img :src="user.avatar" width="300" >
-              <v-btn absolute style="top:10px;left:10px;" icon dark color="black" @click.prevent="deleteImage()">
+            <v-img :src="user.avatar" width="300">
+              <v-btn
+                absolute
+                style="top: 10px; left: 10px"
+                icon
+                dark
+                color="black"
+                @click.prevent="deleteImage()"
+              >
                 <v-icon>mdi-delete</v-icon>
               </v-btn>
             </v-img>
           </div>
           <div v-else>
-              <p>paste a link to an image </p>
-              <v-text-field density="compact" dark label="image url" v-model="user.remoteimage" hint="link to image, jpg gif png" append-icon="mdi-check" @click:append="uploadImage(a.remoteimage,a)"></v-text-field>
-              <p>or upload an image file</p>
-              <input @change="uploadImage($event)" type="file">
+            <p>paste a link to an image</p>
+            <v-text-field
+              density="compact"
+              dark
+              label="image url"
+              v-model="user.remoteimage"
+              hint="link to image, jpg gif png"
+              append-icon="mdi-check"
+              @click:append="uploadImage(user.remoteimage)"
+            ></v-text-field>
+            <p>or upload an image file</p>
+            <input @change="uploadImage($event)" type="file" />
           </div>
         </v-col>
         <v-col cols="12">
@@ -201,18 +222,36 @@ async function forgot(){
   </v-card>
   <v-card v-else class="pa-2 ma-2">
     <div v-if="displayLogin === 'register'">
-      <v-text-field v-model="txtUser" placeholder="username" autocomplete="username"></v-text-field>
-      <v-text-field v-model="txtEmail" placeholder="email address" autocomplete="email"></v-text-field>
+      <v-text-field
+        v-model="txtUser"
+        placeholder="username"
+        autocomplete="username"
+      ></v-text-field>
+      <v-text-field
+        v-model="txtEmail"
+        placeholder="email address"
+        autocomplete="email"
+      ></v-text-field>
       <v-btn @click="register" color="primary" class="mx-2">submit</v-btn>
     </div>
     <div v-if="displayLogin === 'login'">
-      <v-text-field v-model="txtHash" placeholder="account secret from email"></v-text-field>
+      <v-text-field
+        v-model="txtHash"
+        placeholder="account secret from email"
+      ></v-text-field>
       <v-btn @click="login" color="primary" class="mx-2">login</v-btn>
-      <v-btn @click="displayLogin = 'register'" color="secondary" class="mx-2"> register a new account</v-btn>
-      <v-btn @click="displayLogin = 'forgot'" color="error">forgot my shit</v-btn>
+      <v-btn @click="displayLogin = 'register'" color="secondary" class="mx-2">
+        register a new account</v-btn
+      >
+      <v-btn @click="displayLogin = 'forgot'" color="error"
+        >forgot my shit</v-btn
+      >
     </div>
     <div v-if="displayLogin === 'forgot'">
-      <v-text-field v-model="txtForgot" placeholder="email address"></v-text-field>
+      <v-text-field
+        v-model="txtForgot"
+        placeholder="email address"
+      ></v-text-field>
       <v-btn @click="forgot" color="primary">Resend Email</v-btn>
     </div>
   </v-card>

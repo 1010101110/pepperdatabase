@@ -1,26 +1,26 @@
-import db from '~/server/utils/db'
+import db from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event);
 
-    // auth
-    const authuser = await getUserFromRequest(event) as any
+  // auth
+  const authuser = (await getUserFromRequest(event)) as any;
 
-    const {
-        ID,
-        exchange,
-        user,
-        region,
-        wishlist,
-        address,
-        sent,
-        received,
-        returned
-    } = body || {}
+  const {
+    ID,
+    exchange,
+    user,
+    region,
+    wishlist,
+    address,
+    sent,
+    received,
+    returned,
+  } = body || {};
 
-    if (!ID) {
-        throw createError({ statusCode: 400, message: 'Missing registration ID' })
-    }
+  if (!ID) {
+    throw createError({ statusCode: 400, message: "Missing registration ID" });
+  }
 
   const [result] = await db.execute(
     `UPDATE xregistration SET
@@ -43,12 +43,12 @@ export default defineEventHandler(async (event) => {
       sent || null,
       received || null,
       returned || null,
-      ID
-    ]
-  )
+      ID,
+    ],
+  );
 
   return {
     success: true,
     updated_rows: (result as any).affectedRows,
-  }
-})
+  };
+});

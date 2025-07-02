@@ -1,32 +1,29 @@
-import db from '~/server/utils/db'
-import {getUserFromRequest} from '~/server/utils/user'
+import db from "~/server/utils/db";
+import { getUserFromRequest } from "~/server/utils/user";
 
 export default defineEventHandler(async (event) => {
-    // auth
-    const user = await getUserFromRequest(event) as any
+  // auth
+  const user = (await getUserFromRequest(event)) as any;
 
-    //body
-    const body = await readBody(event)
-    const {
-        exchange,
-        region,
-    } = body || {}
+  //body
+  const body = await readBody(event);
+  const { exchange, region } = body || {};
 
-    const [resulti] = await db.execute(
-        `INSERT INTO xregistration
+  const [resulti] = await db.execute(
+    `INSERT INTO xregistration
             (ID, exchange,region,email,user)
             VALUES (UUID(),?,?,?,?);
         `,
-        [exchange, region, user.email,user.name, ]
-    )
+    [exchange, region, user.email, user.name],
+  );
 
-    const [result] = await db.execute(
-        'SELECT * FROM xregistration WHERE exchange = ? and email = ?; ',
-        [exchange, user.email]
-    )
+  const [result] = await db.execute(
+    "SELECT * FROM xregistration WHERE exchange = ? and email = ?; ",
+    [exchange, user.email],
+  );
 
-    return {
-        success: true,
-        result,
-    }
+  return {
+    success: true,
+    result,
+  };
 });

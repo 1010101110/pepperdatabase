@@ -1,61 +1,69 @@
 <script setup lang="ts">
-  import { useTheme } from 'vuetify'
-  import { onMounted } from 'vue'
-  const router = useRouter()
+import { useTheme } from "vuetify";
+import { onMounted } from "vue";
+const router = useRouter();
 
-  const drawer = ref(null);
-  const menu = [
-  {text:"Species",href:"/species"},
-  {text:"Varieties",href:"/varieties"},
-  {text:"Users",href:"/user/list"},
-  {text:"Activity",href:"/history"},
-  {text:"Xchange",href:"/xchange"},
-  ];
+const drawer = ref(null);
+const menu = [
+  { text: "Species", href: "/species" },
+  { text: "Varieties", href: "/varieties" },
+  { text: "Users", href: "/user/list" },
+  { text: "Activity", href: "/history" },
+  { text: "Xchange", href: "/xchange" },
+];
 
-  const { user } = useAuth()
+const { user } = useAuth();
 
-  const theme = useTheme()
-  onMounted(() => {
-    const savedTheme = localStorage.getItem('vtheme')
-    if (savedTheme) {
-      theme.global.name.value = savedTheme
-    }
-  })
-
-  function toggleTheme(){
-    theme.global.name.value = theme.global.current.value.dark ? 'pdblight' : 'pdbdark';
-    localStorage.setItem('vtheme',theme.global.name.value);
+const theme = useTheme();
+onMounted(() => {
+  const savedTheme = localStorage.getItem("vtheme");
+  if (savedTheme) {
+    theme.global.name.value = savedTheme;
   }
+});
 
-  const snacks = ref([]);
-  provide('snacks',snacks);
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark
+    ? "pdblight"
+    : "pdbdark";
+  localStorage.setItem("vtheme", theme.global.name.value);
+}
 
-  useHead({
-    title: 'PepperDatabase',
-  })
+const snacks = ref([]);
+provide("snacks", snacks);
+
+useHead({
+  title: "PepperDatabase",
+});
 </script>
 
 <style>
-  .clickable{
-      cursor: pointer;
-  }
+.clickable {
+  cursor: pointer;
+}
 </style>
 
 <template>
   <v-app>
     <v-navigation-drawer v-model="drawer" mobile-breakpoint="md">
-        <v-list dense>
+      <v-list dense>
+        <v-list-item v-for="item in menu" link @click="router.push(item.href)">
+          <v-list-item-title>
+            {{ item.text }}
+          </v-list-item-title>
+        </v-list-item>
 
-            <v-list-item v-for="item in menu" link @click="router.push(item.href)">
-              <v-list-item-title>
-                {{item.text}}
-              </v-list-item-title>
-            </v-list-item>
-
-            <v-list-item>
-              <v-btn variant="outlined" class="mt-1 ml-2" label="change theme" @click="toggleTheme" color="indigo">change theme</v-btn>
-            </v-list-item>
-        </v-list>
+        <v-list-item>
+          <v-btn
+            variant="outlined"
+            class="mt-1 ml-2"
+            label="change theme"
+            @click="toggleTheme"
+            color="indigo"
+            >change theme</v-btn
+          >
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar color="indigo" dark>
       <template v-slot:prepend>

@@ -1,1 +1,1 @@
-export { Placeholder as TiptapPlaceholder } from '@tiptap/extension-placeholder';
+export { Placeholder as TiptapPlaceholder } from "@tiptap/extension-placeholder";

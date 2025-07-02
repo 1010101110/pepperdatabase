@@ -1,11 +1,14 @@
-import db from '~/server/utils/db'
-import {getUserFromRequest} from '~/server/utils/user'
+import db from "~/server/utils/db";
+import { getUserFromRequest } from "~/server/utils/user";
 
 export default defineEventHandler(async (event) => {
-  const user = await getUserFromRequest(event) as any
-  if(user?.email){
-    const [results] = await db.execute('SELECT ID, exchange, user, region FROM xregistration where email = ?',[user.email]);
+  const user = (await getUserFromRequest(event)) as any;
+  if (user?.email) {
+    const [results] = await db.execute(
+      "SELECT ID, exchange, user, region FROM xregistration where email = ?",
+      [user.email],
+    );
     return results;
   }
-  return
+  return;
 });

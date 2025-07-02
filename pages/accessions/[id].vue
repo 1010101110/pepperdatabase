@@ -1,14 +1,37 @@
 <script setup>
 // reactive state
-const snacks = inject('snacks')
-const route = useRoute()
+const snacks = inject("snacks");
+const route = useRoute();
 
-const {data} = await useFetch(`/api/xaccession/${route.params.id}`)
+const { data: accession } = await useFetch(
+  `/api/xaccession/${route.params.id}`,
+);
+const coverimg = accession.value?.images ? accession.value.images[0] : "na";
 
 useHead({
-  title: computed(() => `PDB ${data.value?.ID} ${data.value?.variety}` || 'Accession')
-})
-
+  title: computed(
+    () =>
+      `PDB ${accession.value?.ID} ${accession.value?.variety}` || "Accession",
+  ),
+  meta: [
+    {
+      property: "og:title",
+      content: `PDB ${accession.value?.ID} ${accession.value?.variety}`,
+    },
+    {
+      property: "og:description",
+      content: `Check out this pepper accession from the pdb xchange! ${accession.value?.ID} ${accession.value?.variety}`,
+    },
+    {
+      property: "og:image",
+      content: `https://pepperdatabase.org/images/variety/${coverimg}.webp`,
+    },
+    {
+      property: "og:url",
+      content: `https://pepperdatabase.org/accessions/${accession.value?.ID}`,
+    },
+  ],
+});
 </script>
 
 <template>
@@ -16,19 +39,23 @@ useHead({
     <v-card class="pa-2 my-4">
       <v-row>
         <v-col cols="12">
-          <h1>PDB {{ data.ID }}</h1>
-          <h3>variety: {{ data.variety }}</h3>
-          <h4>{{ data.pollination }}</h4>
-          <h4>user: {{ data.user }}</h4>
-          <h4>xchange: {{ data.region }} {{ data.exchange }}</h4>
-          <h4># packets: {{ data.quantity }}</h4>
-          <h4>date: {{ new Date(data.sent).toLocaleString() }}</h4>
+          <h1>PDB {{ accession.ID }}</h1>
+          <h3>variety: {{ accession.variety }}</h3>
+          <h4>{{ accession.pollination }}</h4>
+          <h4>user: {{ accession.user }}</h4>
+          <h4>xchange: {{ accession.region }} {{ accession.exchange }}</h4>
+          <h4># packets: {{ accession.quantity }}</h4>
+          <h4>date: {{ new Date(accession.sent).toLocaleString() }}</h4>
         </v-col>
         <v-col cols="12">
-          {{ data.description }}
+          {{ accession.description }}
         </v-col>
         <v-col cols="12">
-          <NuxtLink :to="i" class="d-inline-flex ma-2" v-for="i in data.images">
+          <NuxtLink
+            :to="i"
+            class="d-inline-flex ma-2"
+            v-for="i in accession.images"
+          >
             <v-img :src="i" width="300"></v-img>
           </NuxtLink>
         </v-col>

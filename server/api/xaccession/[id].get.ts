@@ -1,4 +1,4 @@
-import db from '~/server/utils/db'
+import db from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   const { id } = getRouterParams(event);
@@ -6,14 +6,17 @@ export default defineEventHandler(async (event) => {
   if (!id) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid or missing ID'
-    })
+      statusMessage: "Invalid or missing ID",
+    });
   }
 
   const decode = decodeURIComponent(id).trim();
 
-  const [results] = await db.execute('SELECT a.*, r.user, r.region, r.sent, r.exchange FROM xaccession a join xregistration r on r.ID = a.xregistration WHERE a.ID = ?', [decode])
-  const row = (results as any)[0]
+  const [results] = await db.execute(
+    "SELECT a.*, r.user, r.region, r.sent, r.exchange FROM xaccession a join xregistration r on r.ID = a.xregistration WHERE a.ID = ?",
+    [decode],
+  );
+  const row = (results as any)[0];
   try {
     // Attempt to parse the images field
     row.images = row.images ? JSON.parse(row.images) : [];
@@ -22,5 +25,5 @@ export default defineEventHandler(async (event) => {
     row.images = []; // fallback to empty array on error
   }
 
-  return row || {}
+  return row || {};
 });

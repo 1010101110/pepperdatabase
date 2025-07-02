@@ -1,10 +1,10 @@
-import db from '~/server/utils/db'
+import db from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+  const body = await readBody(event);
 
   // auth
-  const user = await getUserFromRequest(event) as any
+  const user = (await getUserFromRequest(event)) as any;
 
   const {
     ID,
@@ -17,14 +17,14 @@ export default defineEventHandler(async (event) => {
     maturity,
     origin,
     accession,
-    description
-  } = body || {}
+    description,
+  } = body || {};
 
   if (!ID) {
-    throw createError({ statusCode: 400, message: 'Missing variety ID' })
+    throw createError({ statusCode: 400, message: "Missing variety ID" });
   }
 
-  const codedDescription = description ? btoa(description) : null
+  const codedDescription = description ? btoa(description) : null;
 
   const [result] = await db.execute(
     `UPDATE varieties SET
@@ -50,12 +50,12 @@ export default defineEventHandler(async (event) => {
       origin,
       accession,
       codedDescription,
-      ID
-    ]
-  )
+      ID,
+    ],
+  );
 
   return {
     success: true,
     updated_rows: (result as any).affectedRows,
-  }
-})
+  };
+});

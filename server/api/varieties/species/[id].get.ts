@@ -1,4 +1,4 @@
-import db from '~/server/utils/db'
+import db from "~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
   const { id } = getRouterParams(event);
@@ -6,13 +6,16 @@ export default defineEventHandler(async (event) => {
   if (!id) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid or missing ID'
-    })
+      statusMessage: "Invalid or missing ID",
+    });
   }
 
   const decode = decodeURIComponent(id).trim();
 
-  const [results] = await db.execute('SELECT * FROM varieties WHERE species = ?', [decode])
+  const [results] = await db.execute(
+    "SELECT * FROM varieties WHERE species = ?",
+    [decode],
+  );
 
-  return results || []
+  return results || [];
 });
