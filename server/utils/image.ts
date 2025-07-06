@@ -58,7 +58,7 @@ export async function handleImageUpload(
         success: true,
         fields: fields,
         filename: `${filename}.webp`,
-        url: `/images/${folder}/${filename}.webp`,
+        url: `https://pepperdatabase.org/images/${folder}/${filename}.webp`,
       };
     } catch (e) {
       console.error("Image processing failed:", e);
@@ -81,7 +81,7 @@ export async function handleImageUpload(
         success: true,
         fields: fields,
         filename: `${filename}.webp`,
-        url: `/images/${folder}/${filename}.webp`,
+        url: `https://pepperdatabase.org/images/${folder}/${filename}.webp`,
       };
     } catch {
       return { success: false, error: "failed to upload image link" };
@@ -108,6 +108,7 @@ async function downloadImage(imageUrl: string) {
 
 export async function deleteImage(img: string) {
   const uploadDir = path.resolve("/var/www/data/");
+  const imgnohost = img.replace('https://pepperdatabase.org','');
   const filepath = path.join(uploadDir, img);
   fs.unlink(filepath);
   console.log("deleted: " + filepath);
