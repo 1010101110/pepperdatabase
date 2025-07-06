@@ -17,6 +17,8 @@ export default defineEventHandler(async (event) => {
     [name, email, bio, id],
   );
 
+  addHistory(`/user/${id}`,`updated user`, user.id)
+
   return {
     success: true,
     updated_rows: (result as any).affectedRows,

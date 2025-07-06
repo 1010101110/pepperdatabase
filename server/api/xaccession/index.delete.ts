@@ -19,6 +19,8 @@ export default defineEventHandler(async (event) => {
     [ID],
   );
 
+  addHistory(`/accessions`,`deleted accession ${ID}`, user.id)
+
   return {
     success: true,
     updated_rows: (result as any).affectedRows,

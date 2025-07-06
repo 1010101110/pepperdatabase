@@ -10,5 +10,9 @@ export default defineEventHandler(async (event) => {
     folder: "variety",
   });
 
+  if(result.success){
+    addHistory(result.url || '',`uploaded image`, user.id)
+  }
+
   return result;
 });

@@ -8,10 +8,15 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: "Name is required" });
   }
 
+  // auth
+  const user = (await getUserFromRequest(event)) as any;
+
   const [result]: any = await db.query(
     "INSERT INTO varieties (name, species) VALUES (?, ?)",
     [name, species],
   );
+
+  addHistory(`/varieties/${result.insertId}`,`updated variety`, user.id)
 
   return {
     success: true,

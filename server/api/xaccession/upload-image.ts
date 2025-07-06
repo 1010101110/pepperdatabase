@@ -43,5 +43,9 @@ export default defineEventHandler(async (event) => {
     }
   }
 
+  if(result.success){
+    addHistory(result.url || '',`uploaded image`, user.id)
+  }
+
   return result;
 });

@@ -34,6 +34,8 @@ export default defineEventHandler(async (event) => {
     a.images = [];
   }
 
+  addHistory(`/accessions/${insertedID}`,`added accesion`, user.id)
+
   return {
     success: true,
     a: a,

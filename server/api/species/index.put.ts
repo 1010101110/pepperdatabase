@@ -23,6 +23,8 @@ export default defineEventHandler(async (event) => {
     [name, attribute, codedDescription, ID],
   );
 
+  addHistory(`/species/${ID}`,`updated species`, user.id)
+
   return {
     success: true,
     updated_rows: (result as any).affectedRows,

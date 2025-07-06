@@ -25,6 +25,8 @@ export default defineEventHandler(async (event) => {
     [variety, generation, pollination, quantity, description, ID],
   );
 
+  addHistory(`/accessions/${ID}`,`updated accesion`, user.id)
+
   return {
     success: true,
     updated_rows: (result as any).affectedRows,

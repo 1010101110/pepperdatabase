@@ -109,7 +109,7 @@ async function downloadImage(imageUrl: string) {
 export async function deleteImage(img: string) {
   const uploadDir = path.resolve("/var/www/data/");
   const imgnohost = img.replace('https://pepperdatabase.org','');
-  const filepath = path.join(uploadDir, img);
+  const filepath = path.join(uploadDir, imgnohost);
   fs.unlink(filepath);
   console.log("deleted: " + filepath);
 }

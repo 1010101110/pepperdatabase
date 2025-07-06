@@ -22,6 +22,8 @@ export default defineEventHandler(async (event) => {
     [exchange, user.email],
   );
 
+  addHistory(`/xchange`,`registered for xchange ${exchange} ${region}`, user.id)
+
   return {
     success: true,
     result,

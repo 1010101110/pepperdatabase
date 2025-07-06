@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
   if (body.id) {
     try {
       await deleteImage(`/images/species/${body.id}.webp`);
+      addHistory(body.id,`deleted species image`, user.id)
 
       return { success: true };
     } catch (e) {

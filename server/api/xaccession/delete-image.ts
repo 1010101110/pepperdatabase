@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
       ]);
 
       await deleteImage(body.deleteMe);
+      addHistory(body.deleteMe,`deleted image`, user.id)
 
       return { success: true };
     } catch (e) {

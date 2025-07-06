@@ -54,6 +54,8 @@ export default defineEventHandler(async (event) => {
     ],
   );
 
+  addHistory(`/varieties/${ID}`,`updated variety`, user.id)
+
   return {
     success: true,
     updated_rows: (result as any).affectedRows,
