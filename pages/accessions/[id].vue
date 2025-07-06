@@ -24,7 +24,7 @@ useHead({
     },
     {
       property: "og:image",
-      content: `https://pepperdatabase.org/images/variety/${coverimg}.webp`,
+      content: coverimg,
     },
     {
       property: "og:url",
@@ -51,13 +51,13 @@ useHead({
           {{ accession.description }}
         </v-col>
         <v-col cols="12">
-          <NuxtLink
-            :to="i"
+          <a
+            :href="i"
             class="d-inline-flex ma-2"
             v-for="i in accession.images"
           >
             <v-img :src="i" width="300"></v-img>
-          </NuxtLink>
+          </a>
         </v-col>
       </v-row>
     </v-card>
