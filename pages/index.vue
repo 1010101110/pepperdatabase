@@ -12,10 +12,10 @@ useHead({
 });
 
 // functions
-const debounceSearch = debounce(apiSearch, 300);
+const debounceSearch = debounce(apiSearch, 500);
 
 async function apiSearch() {
-  if (search.value && search.value.length > 1) {
+  if (search.value && search.value.length > 2) {
     try {
       const encoded = btoa(search.value);
       const data = await $fetch("/api/search", { query: { s: encoded } });
@@ -61,21 +61,23 @@ function accessionImage(a) {
         </p>
       </v-col>
 
-      <v-col cols="12" md="6">
+      <v-col cols="12">
         <v-text-field
           label="Search peppers..."
           prepend-inner-icon="mdi-magnify"
+          max-width="500"
+          class="mx-auto"
           v-model="search"
           @input="debounceSearch"
         />
       </v-col>
 
-      <v-col cols="12" v-for="i in searchresults.species">
-        <div class="d-inline-flex mx-2">
+      <v-col cols="6" sm="4" md="3" v-for="i in searchresults.species">
+        <div class="d-inline-flex mx-2 w-100">
           <v-img
-            :width="100"
             cover
-            :src="`/images/species/${i.ID}.jpg`"
+            aspect-ratio="1"
+            :src="`https://pepperdatabase.org/images/species/${i.ID}.webp`"
           ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
@@ -86,12 +88,12 @@ function accessionImage(a) {
         </div>
       </v-col>
 
-      <v-col cols="12" v-for="i in searchresults.varieties">
-        <div class="d-inline-flex mx-2">
+      <v-col cols="6" sm="4" md="3" v-for="i in searchresults.varieties">
+        <div class="d-inline-flex mx-2 w-100">
           <v-img
-            :width="100"
             cover
-            :src="`/images/variety/${i.ID}.jpg`"
+            aspect-ratio="1"
+            :src="`https://pepperdatabase.org/images/variety/${i.ID}.webp`"
           ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
@@ -102,9 +104,13 @@ function accessionImage(a) {
         </div>
       </v-col>
 
-      <v-col cols="12" v-for="i in searchresults.accessions">
-        <div class="d-inline-flex mx-2">
-          <v-img :width="100" cover :src="accessionImage(i)"></v-img>
+      <v-col cols="6" sm="4" md="3" v-for="i in searchresults.accessions">
+        <div class="d-inline-flex mx-2 w-100">
+          <v-img
+            cover
+            aspect-ratio="1"
+            :src="accessionImage(i)"
+          ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
           <span>PDB {{ i.ID }} {{ i.variety }}</span>

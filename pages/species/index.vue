@@ -60,7 +60,7 @@ useHead({
               <v-img
                 :width="100"
                 cover
-                :src="`/images/species/${s.ID}.webp`"
+                :src="`https://pepperdatabase.org/images/species/${s.ID}.webp`"
               ></v-img>
             </NuxtLink>
           </div>
