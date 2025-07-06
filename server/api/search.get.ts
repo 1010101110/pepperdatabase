@@ -26,11 +26,14 @@ export default defineEventHandler(async (event) => {
 
     const [accessions] = await db.query(
       `
-            SELECT *
-            FROM xaccession
-            WHERE variety LIKE ? or ID = ?
+        SELECT a.*, r.user, r.region
+        FROM xaccession a
+        JOIN xregistration r ON a.xregistration = r.ID
+        WHERE
+        a.variety LIKE ? or a.ID LIKE ?
+        and r.sent is not NULL
         `,
-      [wildcard, decoded],
+      [wildcard, wildcard],
     );
 
     return {

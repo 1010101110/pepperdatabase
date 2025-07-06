@@ -81,10 +81,10 @@ function accessionImage(a) {
           ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
-          <span>{{ i.name }}</span>
+          <span>Species: {{ i.name }}</span>
         </div>
-        <div class="d-inline-flex mx-2">
-          <v-btn :to="`/species/${i.name}`">details</v-btn>
+        <div class="d-flex mx-2">
+          <v-btn :to="`/species/${i.name}`" class="mx-auto">details</v-btn>
         </div>
       </v-col>
 
@@ -97,10 +97,10 @@ function accessionImage(a) {
           ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
-          <span>{{ i.name }}</span>
+          <span>Variety: {{ i.name }}</span>
         </div>
-        <div class="d-inline-flex mx-2">
-          <v-btn :to="`/varieties/${i.name}`">details</v-btn>
+        <div class="d-flex mx-2">
+          <v-btn :to="`/varieties/${i.name}`" class="mx-auto">details</v-btn>
         </div>
       </v-col>
 
@@ -113,10 +113,12 @@ function accessionImage(a) {
           ></v-img>
         </div>
         <div class="d-inline-flex mx-2">
-          <span>PDB {{ i.ID }} {{ i.variety }}</span>
+          PDB# {{ i.ID }} <br>
+          user: {{ i.user }} <br>
+          {{ i.variety }}
         </div>
-        <div class="d-inline-flex mx-2">
-          <v-btn :to="`/accessions/${i.ID}`">details</v-btn>
+        <div class="d-flex">
+          <v-btn :to="`/accessions/${i.ID}`" class="mx-auto">details</v-btn>
         </div>
       </v-col>
     </v-row>
