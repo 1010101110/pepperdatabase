@@ -230,6 +230,7 @@ async function forgot() {
       <v-text-field
         v-model="txtEmail"
         placeholder="email address"
+        type="email"
         autocomplete="email"
       ></v-text-field>
       <v-btn @click="register" color="primary" class="mx-2">submit</v-btn>
@@ -238,6 +239,7 @@ async function forgot() {
       <v-text-field
         v-model="txtHash"
         placeholder="account secret from email"
+        autocomplete="current-password"
       ></v-text-field>
       <v-btn @click="login" color="primary" class="mx-2">login</v-btn>
       <v-btn @click="displayLogin = 'register'" color="secondary" class="mx-2">
