@@ -21,6 +21,12 @@ if (species.value) {
 
 useHead({
   title: computed(() => species.value?.name || "Species"),
+  link:[
+    {
+      rel:'canonical',
+      href:`https://pepperdatabase.org/species/${species.value.name}`
+    },
+  ],
   meta: [
     { property: "og:title", content: `${species.value.name}` },
     {

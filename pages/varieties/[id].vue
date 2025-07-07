@@ -22,6 +22,12 @@ const { data: species } = await useFetch("/api/species");
 
 useHead({
   title: computed(() => varieties.value?.name || "Varieties"),
+  link:[
+    {
+      rel:'canonical',
+      href:`https://pepperdatabase.org/varieties/${varieties.value.name}`
+    },
+  ],
   meta: [
     { property: "og:title", content: `${varieties.value.name}` },
     {

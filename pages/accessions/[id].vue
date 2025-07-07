@@ -13,6 +13,12 @@ useHead({
     () =>
       `PDB ${accession.value?.ID} ${accession.value?.variety}` || "Accession",
   ),
+  link:[
+    {
+      rel:'canonical',
+      href:`https://pepperdatabase.org/accessions/${accession.value?.ID}`
+    },
+  ],
   meta: [
     {
       property: "og:title",
