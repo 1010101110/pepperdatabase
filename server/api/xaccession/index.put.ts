@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   // auth
   const user = (await getUserFromRequest(event)) as any;
 
-  const { ID, variety, generation, pollination, quantity, description } =
+  const { ID, variety, generation, pollination, quantity, description, ancestor } =
     body || {};
 
   if (!ID) {
@@ -20,9 +20,10 @@ export default defineEventHandler(async (event) => {
       pollination = ?,
       quantity = ?,
       description = ?,
+      ancestor = ?,
       edit_on = NOW()
      WHERE ID = ?`,
-    [variety, generation, pollination, quantity, description, ID],
+    [variety, generation, pollination, quantity, description, ancestor, ID],
   );
 
   addHistory(`/accessions/${ID}`,`updated accesion`, user.id)

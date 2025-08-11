@@ -47,11 +47,12 @@ useHead({
         <v-col cols="12">
           <h1>PDB {{ accession.ID }}</h1>
           <h3>variety: {{ accession.variety }}</h3>
+          <h4>ancestor: <NuxtLink :to="`/accessions/${accession.ancestor}`" v-if="accession.ancestor">PDB {{ accession.ancestor }}</NuxtLink> </h4>
           <h4>{{ accession.pollination }}</h4>
           <h4>user: {{ accession.user }}</h4>
           <h4>xchange: {{ accession.region }} {{ accession.exchange }}</h4>
           <h4># packets: {{ accession.quantity }}</h4>
-          <h4>date: {{ new Date(accession.sent).toLocaleString() }}</h4>
+          <h4>date sent to xchange: {{ new Date(accession.sent).toLocaleDateString() }}</h4>
         </v-col>
         <v-col cols="12">
           {{ accession.description }}
@@ -62,7 +63,7 @@ useHead({
             class="d-inline-flex ma-2"
             v-for="i in accession.images"
           >
-            <v-img :src="i" width="300"></v-img>
+            <v-img :src="i" width="300" :alt="accession.variety"></v-img>
           </a>
         </v-col>
       </v-row>

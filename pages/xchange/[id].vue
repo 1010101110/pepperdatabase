@@ -9,6 +9,9 @@ const { data: resp, error } = await useFetch(
   `/api/xregistration/${route.params.id}`,
 );
 const regions = ref(["US", "EU"]);
+const { data: accessions} = await useFetch(
+  `/api/xaccession/dropdown`,
+);
 
 useHead({
   title: computed(() => `xchange `),
@@ -378,9 +381,9 @@ function formatDate(d) {
       >
       <br />
 
-      <v-card class="pa-2 my-5" v-for="a in resp.a">
+      <v-card class="pa-4 my-5" elevation="3" v-for="a in resp.a">
         <v-row>
-          <v-col cols="12" sm="6" lg="2" class="pa-1">
+          <v-col cols="12" sm="6" md="4" class="pa-1">
             <v-text-field
               label="accession #"
               readonly
@@ -388,20 +391,20 @@ function formatDate(d) {
               prefix="PDB"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" lg="4" class="pa-1">
+          <v-col cols="12" sm="6" md="4" class="pa-1">
             <v-text-field
-              label="variety"
+              label="variety name (required)"
               v-model="a.variety"
               hint="include variety name first, color/specialty second. examples: 7 Pot Red, Jalapeno Early, Aji Pineapple Purple"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="4" lg="2" class="pa-1">
+          <v-col cols="12" sm="6" md="4" class="pa-1">
             <v-text-field
               label="# seed packets"
               v-model="a.quantity"
             ></v-text-field>
           </v-col>
-          <v-col cols="12" sm="6" md="4" lg="2" class="pa-1">
+          <v-col cols="12" sm="6" md="4"  class="pa-1">
             <v-select
               label="pollination"
               :items="['open pollinated', 'isolated']"
@@ -409,19 +412,31 @@ function formatDate(d) {
               v-model="a.pollination"
             ></v-select>
           </v-col>
-          <v-col cols="12" sm="6" md="4" lg="2" class="pa-1">
+          <v-col cols="12" sm="6" md="4" class="pa-1">
             <v-select
               label="cross generation (optional)"
+              hint="Is this a cross? do you know its generation?"
+              persistent-hint
               :items="['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7']"
               clearable
               v-model="a.generation"
             ></v-select>
           </v-col>
+          <v-col cols="12" sm="6" md="4" class="pa-1">
+            <v-autocomplete
+              label="ancestor pdb# (optional)"
+              hint="Did you grow this from a previous xchange?"
+              persistent-hint
+              :items="accessions"
+              clearable
+              v-model="a.ancestor"
+            ></v-autocomplete>
+          </v-col>
           <v-col cols="12" class="pa-1">
             <v-textarea
               v-model="a.description"
-              label="review / notes"
-              hint="how did it grow? produce? taste?"
+              label="description (required)"
+              hint="how did it grow? produce? taste? what did the plant, pods, flowers look like?"
             ></v-textarea>
           </v-col>
           <v-col cols="12" class="pa-2">
@@ -438,7 +453,7 @@ function formatDate(d) {
             ></v-btn>
           </v-col>
           <v-col cols="12" class="pa-2">
-            <h3>images</h3>
+            <h4>images (required)</h4>
             <v-row>
               <v-col cols="12" md="4" lg="3" xl="2">
                 <v-card min-height="200px" color="indigo darken-4" class="ma-1">
