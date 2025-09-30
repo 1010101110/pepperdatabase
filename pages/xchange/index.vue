@@ -57,7 +57,7 @@ useHead({
       <h3>{{ xchangeActive }} Exchange</h3>
       <v-card v-if="user" class="pa-2 ma-2">
         <div v-if="currentRegistration">
-          <v-btn :to="`/xchange/${currentRegistration.id}`" color="primary"
+          <v-btn :to="`/xchange/${currentRegistration.ID}`" color="primary"
             >go to my registration</v-btn
           >
         </div>
