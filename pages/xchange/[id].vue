@@ -71,6 +71,10 @@ async function uploadImage(e, a) {
     if (data.success) {
       snacks.value.push("image uploaded");
       if (data.url) {
+        //make sure we have image array to insert
+        if(!a.images){
+          a.images = [];
+        }
         a.images.push(data.url);
       }
     } else {
