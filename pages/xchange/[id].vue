@@ -63,6 +63,7 @@ async function uploadImage(e, a) {
   }
 
   try {
+    snacks.value.push("uploading...");
     const data = await $fetch("/api/xaccession/upload-image", {
       method: "POST",
       body: fd,

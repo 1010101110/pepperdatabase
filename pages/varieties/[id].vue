@@ -88,6 +88,7 @@ async function uploadImage(e) {
   }
 
   try {
+    snacks.value.push("uploading...");
     const data = await $fetch("/api/varieties/upload-image", {
       method: "POST",
       body: fd,
