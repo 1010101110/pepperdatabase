@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
     [variety, generation, pollination, quantity, description, ancestor, ID],
   );
 
-  addHistory(`/accessions/${ID}`,`updated accesion`, user.id)
+  addHistory(`/accessions/${ID}`,`updated accession`, user.id)
 
   return {
     success: true,
