@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
         SELECT a.*, r.user, r.region
         FROM xaccession a
         JOIN xregistration r ON a.xregistration = r.ID
-        WHERE r.region = ? and r.exchange = ? and r.sent is not NULL
+        WHERE r.region = ? and r.exchange = ? and a.images is not null
         `,
     [region, exchange],
   );
