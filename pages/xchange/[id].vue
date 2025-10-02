@@ -173,6 +173,23 @@ async function updateRegistration(r) {
   }
 }
 
+async function sendPackage() {
+  try {
+    //validate before sending
+    resp.a.forEach(a => {
+      if(!a.images){
+        throw 'all accessions must have valid images, if you don\'t have pictures then remove it.'
+      }
+    });
+
+    updateRegistration(resp.r)
+
+  } catch (err) {
+    console.log(err);
+    snacks.value.push({ text: err, color: "error" });
+  }
+}
+
 function formatDate(d) {
   return new Date(d).toLocaleString();
 }
@@ -267,72 +284,18 @@ function formatDate(d) {
           <div v-if="resp.a.length > 0">
             <div v-if="resp.r.region === 'US'">
               <span class="font-weight-bold">address</span><br />
-              address goes here
-              <p>
-                cost of shipping is based on how much you send and how far its
-                going.<br />
-                USA + International ~ 0-30 packets = 5$<br />
-                USA ~ 30 + packets = 10$<br />
-                International ~ 30 + packets = 20$<br />
-              </p>
+              <p>address will be available in novemeber 😘</p>
 
-              <p>
-                please include paper money in your envelope to cover return
-                shipping (id don't want coins)<br />
-                or use online, select family and friends,
-                <a href="https://paypal.me/1010101110"
-                  >https://paypal.me/1010101110</a
-                >
-              </p>
             </div>
             <div v-if="resp.r.region === 'EU'">
               <span class="font-weight-bold">address</span><br />
-              address goes here
-              <p>
-                Most EU countries, €5,60 without tracking, €6,60 with (which id
-                highly suggest).<br />
-                UK & Some other countries, €6,70 without tracking, €7,70 with
-                (which id highly suggest).<br />
-                If there's a fee, like customs/tax/import fees, make sure it's
-                covered, this mostly applies for those outside the EU
-              </p>
+              <p>address will be available in novemeber 😘</p>
 
-              <p>
-                When sending me packages from outside the EU, make sure you fill
-                in the customs sticker (cn22 or cn23), what is in the package,
-                just write down pepper flakes/powder (not seeds!), and add a
-                value of like €5, and fill in the correct weight, just weigh it
-                yourself, or ask at the postoffice, there's still a chance
-                you'll have to pay import fees/tax, but that's based on that
-                amount
-              </p>
-
-              <p>
-                If you don't do any of this, or skip one of these things,
-                customs can & will hold your package, and you'll have to pay
-                fees, id'll get a letter from them about it, and you'll be
-                contacted by me, for paying, if id don't get a response, it gets
-                automatically returned by the post.
-              </p>
-
-              <p>
-                If any questions, contact me on reddit or discord.<br />
-                /u/Vlammenzee<br />
-                Vlammenzee#2798<br />
-              </p>
-
-              <span class="font-weight-bold">return shipping payment info</span
-              ><br />
-              <p>
-                <a href="https://www.paypal.com/paypalme/Vlammenzee"
-                  >PAYPAL Vlammenzee</a
-                ><br />
-              </p>
             </div>
             <div class="mt-2">
               When you have sent your package click the button, this will notify
               the admin and record your send date:
-              <v-btn @click="updateStatus(resp.r, 'sent')">Sent package</v-btn>
+              <v-btn color="green" @click="sendPackage()">Sent package</v-btn>
             </div>
           </div>
           <div v-else>Add some accessions below!</div>
@@ -545,8 +508,8 @@ function formatDate(d) {
       </v-card>
     </div>
 
-    <v-card class="pa-2 mb-3">
-      <!-- <div class="clickable headline indigo white--text pa-2" @click="toggleCollapse">All Accessions</div>
+    <!--<v-card class="pa-2 mb-3">
+       <div class="clickable headline indigo white--text pa-2" @click="toggleCollapse">All Accessions</div>
             <hr>
             <v-data-table :headers="allheaders" :items="allaccessions" :pagination.sync="allpagination" class="elevation-1">
                 <template v-slot:items="props">
@@ -563,8 +526,8 @@ function formatDate(d) {
                 <v-col cols="12" v-for="x in allaccessions">
                     <p>PDB{{x.ID}} from {{x.user}} {{x.quantity}}x {{x.variety}}</p>
                 </v-col>
-            </v-row> -->
-    </v-card>
+            </v-row>
+    </v-card>-->
 
     <v-card class="pa-2 mb-3">
       <h3>help?!</h3>
