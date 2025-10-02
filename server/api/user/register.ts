@@ -35,8 +35,7 @@ export default defineEventHandler(async (event) => {
     );
 
     // send email
-    const { sendMail } = useNodeMailer();
-    await sendMail({
+    email.emails.send({
       from: "Pepper <pepper@pepperdatabase.org>",
       to: body.email,
       subject: "Welcome To PepperDatabase",

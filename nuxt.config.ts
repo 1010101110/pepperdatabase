@@ -33,16 +33,9 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["nuxt-nodemailer", "nuxt-tiptap-editor"],
+  modules: ["nuxt-tiptap-editor"],
 
   tiptap: {
     prefix: "Tiptap",
-  },
-
-  nodemailer: {
-    from: '"Pepper" <pepper@pepperdatabase.org>',
-    host: "localhost",
-    port: 25,
-    secure: false,
   },
 });
