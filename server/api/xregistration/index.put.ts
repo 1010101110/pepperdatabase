@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
     ],
   );
 
-  addHistory(`/xchange`,`updated xchange ${exchange} registration`, user.id)
+  addHistory(`/xchange`,`updated xchange ${exchange} registration`, authuser.id)
 
   return {
     success: true,
