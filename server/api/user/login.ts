@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
   try {
     const decode = decodeURIComponent(hash).trim();
     const [resp] = await db.execute(
-      `select id, name, email, bio, avatar from users2 where activation_hash=? and deleted = false`,
+      `select id, account_type, name, email, bio, avatar from users2 where activation_hash=? and deleted = false`,
       [decode],
     );
     const user = (resp as any[])[0];
