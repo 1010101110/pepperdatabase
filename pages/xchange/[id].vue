@@ -105,23 +105,28 @@ async function deleteImage(i, a) {
   }
 }
 
-async function rotateImage(i, a) {
+async function rotateImage(i,a) {
+  //remove image from array so it can be refreshed
+  const imgagescopy = a.images.slice();
+  a.images = a.images.filter((x) => x !== i);
+
+  //rotate server
   try {
     const data = await $fetch("/api/image-rotate", {
       method: "POST",
       body: { rotateMe: i },
     });
     if (data.success) {
-      const temp = a.images
-      a.images = []
+      console.log('rotated idiot')
       snacks.value.push("rotated image");
-      a.images = temp
     } else {
       snacks.value.push("error rotating");
     }
   } catch (err) {
     console.log(err);
     snacks.value.push({ text: err, color: "error" });
+  } finally {
+    a.images = imgagescopy;
   }
 }
 
@@ -512,7 +517,7 @@ function formatDate(d) {
               <v-col v-for="img in a.images" cols="4" lg="2" class="pa-2">
                 <div style="position: relative">
                   <NuxtLink :to="img" target="_blank">
-                    <v-img :src="img" :to="img">
+                    <v-img :src="img">
                       <v-btn
                         absolute
                         style="top: 10px; left: 10px"
