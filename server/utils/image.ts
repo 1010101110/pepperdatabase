@@ -51,7 +51,7 @@ export async function handleImageUpload(
   if (files.image && files.image.length > 0) {
     const uploaded = files.image[0];
     try {
-      await sharp(uploaded.filepath).webp({ quality: 80 }).toFile(outputPath);
+      await sharp(uploaded.filepath).webp().toFile(outputPath);
       console.log("upload: " + outputPath);
 
       return {
@@ -74,7 +74,7 @@ export async function handleImageUpload(
     const link = Array.isArray(fields.link) ? fields.link[0] : fields.link;
     try {
       const buff = await downloadImage(link);
-      await sharp(buff).webp({ quality: 80 }).toFile(outputPath);
+      await sharp(buff).webp().toFile(outputPath);
       console.log("upload: " + outputPath);
 
       return {
@@ -112,4 +112,15 @@ export async function deleteImage(img: string) {
   const filepath = path.join(uploadDir, imgnohost);
   fs.unlink(filepath);
   console.log("deleted: " + filepath);
+}
+
+export async function rotateImage(img: string) {
+  const uploadDir = path.resolve("/var/www/data/");
+  const imgnohost = img.replace('https://pepperdatabase.org','');
+  const filepath = path.join(uploadDir, imgnohost);
+
+  const buff = await sharp(filepath).rotate(90).toBuffer();
+  await sharp(buff).toFile(filepath);
+
+  console.log("rotated: " + filepath);
 }

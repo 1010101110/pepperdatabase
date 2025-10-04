@@ -105,6 +105,26 @@ async function deleteImage(i, a) {
   }
 }
 
+async function rotateImage(i, a) {
+  try {
+    const data = await $fetch("/api/image-rotate", {
+      method: "POST",
+      body: { rotateMe: i },
+    });
+    if (data.success) {
+      const temp = a.images
+      a.images = []
+      snacks.value.push("rotated image");
+      a.images = temp
+    } else {
+      snacks.value.push("error rotating");
+    }
+  } catch (err) {
+    console.log(err);
+    snacks.value.push({ text: err, color: "error" });
+  }
+}
+
 async function updateAccession(a) {
   try {
     const data = await $fetch(`/api/xaccession`, { method: "PUT", body: a });
@@ -501,6 +521,15 @@ function formatDate(d) {
                         color="black"
                         @click.prevent="deleteImage(img, a)"
                         ><v-icon>mdi-delete</v-icon></v-btn
+                      >
+                      <v-btn
+                        absolute
+                        style="top: 10px; left: 30px"
+                        icon
+                        dark
+                        color="orange"
+                        @click.prevent="rotateImage(img, a)"
+                        ><v-icon>mdi-rotate-right</v-icon></v-btn
                       >
                     </v-img>
                   </NuxtLink>
