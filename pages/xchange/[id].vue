@@ -106,18 +106,18 @@ async function deleteImage(i, a) {
 }
 
 async function rotateImage(i,a) {
-  //remove image from array so it can be refreshed
-  const imgagescopy = a.images.slice();
-  a.images = a.images.filter((x) => x !== i);
+  //strip any previous rotations
+  const cleanImg = i.includes('?') ? i.split('?')[0] : i;
+  const indexImg = a.images.indexOf(i)
+  a.images[indexImg] = 'loading'
 
   //rotate server
   try {
     const data = await $fetch("/api/image-rotate", {
       method: "POST",
-      body: { rotateMe: i },
+      body: { rotateMe: cleanImg },
     });
     if (data.success) {
-      console.log('rotated idiot')
       snacks.value.push("rotated image");
     } else {
       snacks.value.push("error rotating");
@@ -125,8 +125,9 @@ async function rotateImage(i,a) {
   } catch (err) {
     console.log(err);
     snacks.value.push({ text: err, color: "error" });
-  } finally {
-    a.images = imgagescopy;
+  }
+  finally {
+    a.images[indexImg] = cleanImg + '?' + Date.now()
   }
 }
 
@@ -516,7 +517,7 @@ function formatDate(d) {
               </v-col>
               <v-col v-for="img in a.images" cols="4" lg="2" class="pa-2">
                 <div style="position: relative">
-                  <NuxtLink :to="img" target="_blank">
+                  <NuxtLink :to="img" target="_blank" v-if="img !== 'loading'">
                     <v-img :src="img">
                       <v-btn
                         absolute
@@ -538,6 +539,8 @@ function formatDate(d) {
                       >
                     </v-img>
                   </NuxtLink>
+                  <v-progress-circular size="100" indeterminate color="red" v-else>
+                  </v-progress-circular>
                 </div>
               </v-col>
             </v-row>
