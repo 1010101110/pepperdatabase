@@ -176,14 +176,18 @@ async function updateRegistration(r) {
 async function sendPackage() {
   try {
     //validate before sending
-    resp.a.forEach(a => {
-      if(!a.images){
-        throw 'all accessions must have valid images, if you don\'t have pictures then remove it.'
+    for (let i = 0; i < resp.value.a.length; i++) {
+      const a = resp.value.a[i];
+      if(!Array.isArray(a.images) || !a.images.length){
+        throw 'all accessions must have images, if you don\'t have pictures then we don\'t want the seeds..'
       }
-    });
+    }
 
-    updateRegistration(resp.r)
+    if(!resp.value.r.address){
+      throw 'please provide your return address'
+    }
 
+    updateRegistration(resp.value.r)
   } catch (err) {
     console.log(err);
     snacks.value.push({ text: err, color: "error" });
@@ -215,7 +219,7 @@ function formatDate(d) {
           </v-col>
           <v-col cols="12" sm="4" md="5" lg="4" class="pa-1">
             <v-text-field
-              disabled
+              readonly
               v-model="resp.r.email"
               autocomplete="email"
               label="email address"
@@ -487,7 +491,7 @@ function formatDate(d) {
               </v-col>
               <v-col v-for="img in a.images" cols="4" lg="2" class="pa-2">
                 <div style="position: relative">
-                  <NuxtLink :to="img">
+                  <NuxtLink :to="img" target="_blank">
                     <v-img :src="img" :to="img">
                       <v-btn
                         absolute

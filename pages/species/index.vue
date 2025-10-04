@@ -56,7 +56,7 @@ useHead({
       <v-col cols="12" v-for="s in data" :key="s.ID">
         <v-card class="pa-2 mb-2">
           <div class="d-inline-flex mx-2">
-            <NuxtLink :to="`/species/${s.name}`">
+            <NuxtLink :to="`/species/${s.name}`" target="_blank">
               <v-img
                 :width="100"
                 cover

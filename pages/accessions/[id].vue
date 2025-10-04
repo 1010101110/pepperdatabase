@@ -61,6 +61,7 @@ useHead({
           <a
             :href="i"
             class="d-inline-flex ma-2"
+            target="_blank"
             v-for="i in accession.images"
           >
             <v-img :src="i" width="300" :alt="accession.variety"></v-img>

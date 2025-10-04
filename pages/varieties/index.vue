@@ -98,7 +98,7 @@ useHead({
         <v-lazy>
           <v-card class="pa-2 mb-2">
             <div class="d-inline-flex mx-2 w-100">
-              <NuxtLink :to="`/varieties/${s.name}`" class="w-100">
+              <NuxtLink :to="`/varieties/${s.name}`" class="w-100" target="_blank">
                 <v-img
                   cover
                   aspect-ratio="1"
