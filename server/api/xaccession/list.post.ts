@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
         FROM xaccession a
         JOIN xregistration r ON a.xregistration = r.ID
         WHERE r.region = ? and r.exchange = ? and a.images is not null
+        ORDER BY a.ID desc
         `,
     [region, exchange],
   );
