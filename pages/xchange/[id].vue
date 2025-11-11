@@ -135,9 +135,9 @@ async function updateAccession(a) {
   try {
     const data = await $fetch(`/api/xaccession`, { method: "PUT", body: a });
     if (data.success) {
-      snacks.value.push("udpated accession");
+      snacks.value.push("updated accession");
     } else {
-      snacks.value.push("error udpating");
+      snacks.value.push("error updating");
     }
   } catch (err) {
     console.log(err);
@@ -201,7 +201,7 @@ async function updateRegistration(r) {
 
 async function sendPackage() {
   try {
-    //validate before sending
+    //validate accessions
     for (let i = 0; i < resp.value.a.length; i++) {
       const a = resp.value.a[i];
       if(!Array.isArray(a.images) || !a.images.length){
@@ -209,10 +209,15 @@ async function sendPackage() {
       }
     }
 
+    //ensure they have a return address
     if(!resp.value.r.address){
       throw 'please provide your return address'
     }
 
+    //mark as sent
+    resp.value.r.sent = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+    //ok do the update
     updateRegistration(resp.value.r)
   } catch (err) {
     console.log(err);
@@ -221,7 +226,7 @@ async function sendPackage() {
 }
 
 function formatDate(d) {
-  return new Date(d).toLocaleString();
+  return d ? new Date(d).toLocaleString() : '';
 }
 </script>
 
@@ -298,8 +303,6 @@ function formatDate(d) {
           </v-col>
         </v-row>
       </v-card>
-
-      <!-- <v-btn icon dark color="primary" @click="logout"><v-icon>save</v-icon></v-btn> -->
     </div>
 
     <div class="pa-2 mb-2">
@@ -311,57 +314,49 @@ function formatDate(d) {
       </div>
       <v-card class="pa-2">
         <div>
-          <div v-if="resp.a.length > 0">
-            <div v-if="resp.r.region === 'US'">
-              <span class="font-weight-bold">address</span><br />
-              <p>address will be available in novemeber 😘</p>
+          <div v-if="resp.a.length > 0" class="pa-2">
+            <h5 class="mt-1">package</h5>
+            <div v-if="resp.r.region === 'US'" v-html="resp.x.us_package">
+            </div>
+            <div v-if="resp.r.region === 'EU'" v-html="resp.x.eu_package">
+            </div>
 
+            <h5 class="mt-3">address</h5>
+            <div v-if="resp.r.region === 'US'">
+              <code v-html="resp.x.us_address">
+              </code>
             </div>
             <div v-if="resp.r.region === 'EU'">
-              <span class="font-weight-bold">address</span><br />
-              <p>address will be available in novemeber 😘</p>
-
+              <code v-html="resp.x.eu_address">
+              </code>
             </div>
-            <div class="mt-2">
-              When you have sent your package click the button, this will notify
-              the admin and record your send date:
-              <v-btn color="green" @click="sendPackage()">Sent package</v-btn>
+
+            <div v-if="!resp.r.sent">
+              <h5 class="mt-3">mark as sent</h5>
+              <div>
+                When you have sent your package click the button<br/>
+                this will notify the admin and record your send date:<br/>
+                <v-btn color="green" @click="sendPackage()">Sent package</v-btn>
+              </div>
+            </div>
+
+            <div v-if="resp.r.sent" class="mt-2">
+              Package sent to exchange:
+              <span class="font-weight-bold">{{ formatDate(resp.r.sent) }}</span
+              ><br /><br />
+              Package recieved:
+              <span v-if="resp.r.received" class="font-weight-bold">{{
+                formatDate(resp.r.received)
+              }}</span
+              ><br /><br />
+              Package returned to you:
+              <span v-if="resp.r.returned" class="font-weight-bold">{{
+                formatDate(resp.r.returned)
+              }}</span
+              ><br />
             </div>
           </div>
           <div v-else>Add some accessions below!</div>
-        </div>
-
-        <div v-if="resp.r.sent">
-          <!-- <div v-if="resp.r.region === 'US'">
-                    please include paper money in your envelope to cover return shipping (id don't want coins)<br>
-                    any questions or issues message /u/1010101110 on reddit
-                </div>
-                <div v-if="resp.r.region === 'EU'">
-                <p>
-                            <a href="https://www.paypal.com/paypalme/Vlammenzee?">PAYPAL Vlammenzee</a><br>
-                            Postage is €6 (if there's a fee, make sure it's covered).<br><br>
-                            If any questions, contact me on reddit or discord.<br>
-                            /u/Vlammenzee<br>
-                            Vlammenzee#2798<br>
-
-                        </p>
-
-                    <br><br>
-                </div>
-            -->
-          Package sent to exchange:
-          <span class="font-weight-bold">{{ formatDate(resp.r.sent) }}</span
-          ><br /><br />
-          Package recieved:
-          <span v-if="resp.r.received" class="font-weight-bold">{{
-            formatDate(resp.r.received)
-          }}</span
-          ><br /><br />
-          Package returned to you:
-          <span v-if="resp.r.returned" class="font-weight-bold">{{
-            formatDate(resp.r.returned)
-          }}</span
-          ><br />
         </div>
       </v-card>
     </div>
@@ -570,10 +565,10 @@ function formatDate(d) {
             </v-row>
     </v-card>-->
 
-    <v-card class="pa-2 mb-3">
+    <v-alert type="error" class="pa-2 mb-3">
       <h3>help?!</h3>
-      <p>create at ticket in discord or reddit message to /u/1010101110</p>
-    </v-card>
+      <p>create at ticket <a href="https://discord.gg/QD44vtCusv">DISCORD LINK</a> </p>
+    </v-alert>
   </v-container>
   <v-container v-else>
     <div v-if="!user">you must login to view your registration</div>
