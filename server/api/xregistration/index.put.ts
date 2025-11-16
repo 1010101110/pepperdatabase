@@ -40,9 +40,9 @@ export default defineEventHandler(async (event) => {
       region,
       wishlist,
       address,
-      sent || null,
-      received || null,
-      returned || null,
+      sqlDate(sent),
+      sqlDate(received),
+      sqlDate(returned),
       ID,
     ],
   );
