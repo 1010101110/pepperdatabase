@@ -35,7 +35,7 @@ export default defineEventHandler(async (event) => {
     );
 
     // send email
-    email.emails.send({
+    resend.emails.send({
       from: "Pepper <pepper@pepperdatabase.org>",
       to: body.email,
       subject: "Welcome To PepperDatabase",

@@ -59,7 +59,7 @@ async function updateRegistration(r) {
 async function updateRegistrationDate(r,field) {
   try {
     //change date field
-    r[field] = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    r[field] = new Date();
 
     //ok do the update
     updateRegistration(r)
