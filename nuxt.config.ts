@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-05-15",
   pages: true,
@@ -10,7 +12,10 @@ export default defineNuxtConfig({
     "/species/show/**": { redirect: "/species/**" },
   },
 
-  css: ["vuetify/styles", "@mdi/font/css/materialdesignicons.min.css"],
+  css: [
+    "vuetify/styles",
+    "@mdi/font/css/materialdesignicons.min.css",
+  ],
 
   devtools: { enabled: true },
 
@@ -33,9 +38,32 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["nuxt-tiptap-editor"],
+  modules: [
+    "nuxt-tiptap-editor",
+    async (options, nuxt) => {
+      nuxt.hooks.hook('vite:extendConfig', (config) => {
+        // @ts-expect-error
+        config.plugins.push(
+          vuetify({
+            autoImport: true,
+          })
+        )
+      })
+    },
+  ],
 
   tiptap: {
     prefix: "Tiptap",
+  },
+
+  vite: {
+    vue: {
+      template: {
+        transformAssetUrls,
+      },
+    },
+    ssr: {
+      noExternal: ['vuetify'], // Ensures Vuetify works correctly with SSR
+    },
   },
 });

@@ -30,6 +30,7 @@
   "devDependencies": {
     "@types/formidable": "^3.4.5",
     "prettier": "^3.6.2",
-    "resend": "^6.1.1"
+    "resend": "^6.1.1",
+    "vite-plugin-vuetify": "^2.1.2"
   }
 }
