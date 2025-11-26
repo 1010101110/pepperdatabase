@@ -82,7 +82,7 @@ useHead({
         <v-toolbar-title class="cursor-pointer">PepperDatabase</v-toolbar-title>
       </NuxtLink>
       <v-spacer />
-      <v-btn icon to="/user" v-if="user">
+      <v-btn icon to="/user" v-if="user && user.avatar">
         <v-avatar :image="user.avatar"></v-avatar>
       </v-btn>
       <v-btn icon to="/user" v-else>
