@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
   const user = (await getUserFromRequest(event)) as any;
   if (user?.email) {
     const [results] = await db.execute(
-      "SELECT ID, exchange, user, region FROM xregistration where email = ?",
+      "SELECT ID, exchange, user, region FROM xregistration where email = ? order by exchange desc",
       [user.email],
     );
     return results;
