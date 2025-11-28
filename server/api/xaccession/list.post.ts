@@ -28,6 +28,15 @@ export default defineEventHandler(async (event) => {
       whereConditions.push('a.pollination LIKE ?');
       params.push(`%${filters.pollination}%`);
     }
+    if(filters.status == 'received'){
+      whereConditions.push('r.received is not null')
+    }
+    if(filters.status == 'sent'){
+      whereConditions.push('r.sent is not null')
+    }
+    if(filters.status == 'returned'){
+      whereConditions.push('r.returned is not null')
+    }
   }
 
   // Build ORDER BY clause
@@ -67,9 +76,9 @@ export default defineEventHandler(async (event) => {
         FROM xaccession a
         JOIN xregistration r ON a.xregistration = r.ID
         WHERE ${whereConditions.join(' AND ')}
-        ORDER BY ${orderBy}
+        ORDER BY ?
         `,
-    params,
+    [...params, orderBy],
   );
 
   const a = (aresults as any[]).map((r) => {

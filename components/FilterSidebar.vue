@@ -6,9 +6,10 @@ const props = defineProps({
       sortBy: 'newest',
       filters: {
         variety: '',
-        user: '',
-        generation: '',
-        pollination: ''
+        user: null,
+        status:null,
+        generation: null,
+        pollination: null
       }
     })
   },
@@ -96,9 +97,10 @@ function clearFilters() {
     sortBy: 'newest',
     filters: {
       variety: '',
-      user: '',
-      generation: '',
-      pollination: ''
+      user: null,
+      generation: null,
+      pollination: null,
+      status:null,
     }
   };
   emit('update:modelValue', localValue.value);
@@ -107,7 +109,7 @@ function clearFilters() {
 
 const hasActiveFilters = computed(() => {
   const f = localValue.value.filters;
-  return f.variety || f.user || f.generation || f.pollination;
+  return f.variety || f.user || f.generation || f.pollination || f.status;
 });
 </script>
 
@@ -119,9 +121,9 @@ const hasActiveFilters = computed(() => {
         Active
       </v-chip>
     </v-card-title>
-    
+
     <v-divider></v-divider>
-    
+
     <v-card-text>
       <!-- Sort Section -->
       <div class="mb-6">
@@ -140,7 +142,7 @@ const hasActiveFilters = computed(() => {
       <!-- Filter Section -->
       <div class="mb-4">
         <div class="text-subtitle-2 mb-3 font-weight-bold">Filter By</div>
-        
+
         <v-text-field
           v-model="localValue.filters.variety"
           label="Variety Name"
@@ -150,6 +152,17 @@ const hasActiveFilters = computed(() => {
           hide-details
           class="mb-3"
         ></v-text-field>
+
+        <v-select
+          v-model="localValue.filters.status"
+          :items="['sent','received','returned']"
+          label="Status"
+          density="compact"
+          variant="outlined"
+          clearable
+          hide-details
+          class="mb-3"
+        ></v-select>
 
         <v-select
           v-model="localValue.filters.user"
