@@ -76,9 +76,9 @@ export default defineEventHandler(async (event) => {
         FROM xaccession a
         JOIN xregistration r ON a.xregistration = r.ID
         WHERE ${whereConditions.join(' AND ')}
-        ORDER BY ?
+        ORDER BY ${orderBy}
         `,
-    [...params, orderBy],
+    [...params],
   );
 
   const a = (aresults as any[]).map((r) => {
